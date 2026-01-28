@@ -158,6 +158,22 @@ struct ParkDetailView: View {
                         }
                     }
                     
+                    if let coordinates = park.coordinates {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Location")
+                                .font(.headline)
+                            
+                            Map(coordinateRegion: .constant(MKCoordinateRegion(
+                                center: coordinates,
+                                span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)
+                            )), annotationItems: [park]) { location in
+                                MapMarker(coordinate: location.coordinates ?? coordinates)
+                            }
+                            .frame(height: 200)
+                            .cornerRadius(12)
+                        }
+                    }
+                    
                     if let lodging = park.lodging {
                          VStack(alignment: .leading, spacing: 12) {
                             Text("Where to Stay")
@@ -174,6 +190,7 @@ struct ParkDetailView: View {
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
                                 }
+                                .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(8)
                                 .background(Color(uiColor: .secondarySystemBackground))
                                 .cornerRadius(8)
